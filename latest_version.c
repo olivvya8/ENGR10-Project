@@ -78,7 +78,7 @@ const double BRIGHT_MIN_CHROMA = 0.18;
 // NORMAL LIGHT THRESHOLDS
 // =====================================================
 
-const double NORMAL_TOTAL_THRESHOLD = 0.65;
+const double NORMAL_TOTAL_THRESHOLD = 0.60;
 
 const double NORMAL_MIN_R_RATIO = 0.50;
 
@@ -97,11 +97,11 @@ const double DIM_MIN_R_RATIO = 0.62;
 const double DIM_MIN_RG_DELTA = 0.06;
 const double DIM_MIN_RB_DELTA = 0.06;
 
-const double DIM_MIN_CHROMA = 0.07;
+const double DIM_MIN_CHROMA = 0.06; 
 
 
 
-void trackRuby(bool *rubyDetected, bool *rubyMoved, bool *attemptedTheft, int *prevCenterRow, int *prevCenterCol, long *prevBrightness)
+void trackRuby(bool *rubyDetected, bool *rubyMoved, bool *attemptedTheft, int *prevCenterRow, int *prevCenterCol)
 {
     static int motionCount = 0;
 
@@ -246,8 +246,11 @@ void trackRuby(bool *rubyDetected, bool *rubyMoved, bool *attemptedTheft, int *p
             long disp = dx*dx + dy*dy;
 
             
-
-			if(disp > 16){
+            if(disp > 30){
+                *rubyMoved = true;
+                *attemptedTheft = true;
+            }
+			else if(disp > 16){
 				motionCount ++;
 				
 			}
@@ -410,7 +413,7 @@ int main() {
 	
 
 	display_picture();
-	trackRuby(&rubyDetected, &prevCenterRow, &prevCenterCol, &prevBrightness);
+	trackRuby(&rubyDetected, &rubyMoved, &attemptedTheft, &prevCenterRow, &prevCenterCol);
 	if(attemptedTheft){
 		changeStartDisplay(true);
 		rubyPresent = true;
@@ -425,7 +428,7 @@ int main() {
 
   while(rubyPresent) {
 	take_picture();
-	trackRuby(&rubyDetected, &prevCenterRow, &prevCenterCol, &prevBrightness);
+	trackRuby(&rubyDetected, &rubyMoved, &attemptedTheft, &prevCenterRow, &prevCenterCol);
 	if(attemptedTheft){
 		changeStartDisplay(true);
 	}
