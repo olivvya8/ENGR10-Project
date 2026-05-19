@@ -64,7 +64,7 @@ const double MAX_GREEN_RED_RATIO = 0.78;
 // BRIGHT LIGHT THRESHOLDS
 // =====================================================
 
-const double BRIGHT_TOTAL_THRESHOLD = 1.80;
+const double BRIGHT_TOTAL_THRESHOLD = 1.55;
 
 const double BRIGHT_MIN_R_RATIO = 0.40;
 
@@ -97,7 +97,10 @@ const double DIM_MIN_R_RATIO = 0.62;
 const double DIM_MIN_RG_DELTA = 0.06;
 const double DIM_MIN_RB_DELTA = 0.06;
 
-const double DIM_MIN_CHROMA = 0.06; 
+const double DIM_MIN_CHROMA = 0.06;
+
+const int highDisplacement = 50;
+const int smallDisplacement = 16;
 
 
 
@@ -243,11 +246,11 @@ void trackRuby(bool *rubyDetected, bool *rubyMoved, bool *attemptedTheft, int *p
             long disp = dx*dx + dy*dy;
 
             
-            if(disp > 30){
+            if(disp > highDisplacement){
                 *rubyMoved = true;
                 *attemptedTheft = true;
             }
-			else if(disp > 16){
+			else if(disp > smallDisplacement){
 				motionCount ++;
 				
 			}
