@@ -169,43 +169,40 @@ void trackRuby(bool *rubyDetected, bool *rubyMoved, bool *attemptedTheft, int *p
 			// =================================================
 			// BRIGHT LIGHTING
 			// =================================================
-			if (total >= BRIGHT_TOTAL_THRESHOLD)
-			{
-				if (rRatio >= BRIGHT_MIN_R_RATIO &&	rgDifference >= BRIGHT_MIN_RG_DELTA &&
-					rbDifference >= BRIGHT_MIN_RB_DELTA &&
-					chroma >= BRIGHT_MIN_CHROMA)
-				{
-					valid = true;
-				}
-			}
+			
+            if (total >= BRIGHT_TOTAL_THRESHOLD && rRatio >= BRIGHT_MIN_R_RATIO &&	rgDifference >= BRIGHT_MIN_RG_DELTA &&
+                rbDifference >= BRIGHT_MIN_RB_DELTA &&
+                chroma >= BRIGHT_MIN_CHROMA)
+            {
+                valid = true;
+            }
+			
 
 			// =================================================
 			// NORMAL LIGHTING
 			// =================================================
-			else if (total >= NORMAL_TOTAL_THRESHOLD)
-			{
-				if (rRatio >= NORMAL_MIN_R_RATIO &&
-					rgDifference >= NORMAL_MIN_RG_DELTA &&
-					rbDifference >= NORMAL_MIN_RB_DELTA &&
-					chroma >= NORMAL_MIN_CHROMA)
-				{
-					valid = true;
-				}
-			}
+			
+            else if (total >= NORMAL_TOTAL_THRESHOLD && rRatio >= NORMAL_MIN_R_RATIO &&
+                rgDifference >= NORMAL_MIN_RG_DELTA &&
+                rbDifference >= NORMAL_MIN_RB_DELTA &&
+                chroma >= NORMAL_MIN_CHROMA)
+            {
+                valid = true;
+            }
+			
 
 			// =================================================
 			// DIM LIGHTING
 			// =================================================
-			else
-			{
-				if (rRatio >= DIM_MIN_R_RATIO &&
-					rgDifference >= DIM_MIN_RG_DELTA &&
-					rbDifference >= DIM_MIN_RB_DELTA &&
-					chroma >= DIM_MIN_CHROMA)
-				{
-					valid = true;
-				}
-			}
+			
+            else if (rRatio >= DIM_MIN_R_RATIO &&
+                rgDifference >= DIM_MIN_RG_DELTA &&
+                rbDifference >= DIM_MIN_RB_DELTA &&
+                chroma >= DIM_MIN_CHROMA)
+            {
+                valid = true;
+            }
+			
 
             if(valid){
                 redCount ++;
