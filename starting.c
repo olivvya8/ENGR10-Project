@@ -876,8 +876,8 @@ char *months[] = {
 const double MIN_TOTAL_BRIGHTNESS = 0.10;
 
 // --- White/grey glare rejection ---
-const double BRIGHT_GLARE_TOTAL = 2.70;
-const double MAX_GLARE_CHROMA = 0.05;
+const double BRIGHT_GLARE_TOTAL = 2;
+const double MAX_GLARE_CHROMA = 0.01;
 
 // --- Yellow/orange rejection ---
 const double MAX_GREEN_RED_RATIO = 0.78;
@@ -889,14 +889,14 @@ int motionCount = 0;
 // BRIGHT LIGHT THRESHOLDS
 // =====================================================
 
-const double BRIGHT_TOTAL_THRESHOLD = 1.55;
+const double BRIGHT_TOTAL_THRESHOLD = 0.75;
 
-const double BRIGHT_MIN_R_RATIO = 0.40;
+const double BRIGHT_MIN_R_RATIO = 0.01;
 
-const double BRIGHT_MIN_RG_DELTA = 0.16;
-const double BRIGHT_MIN_RB_DELTA = 0.16;
+const double BRIGHT_MIN_RG_DELTA = 0.05;
+const double BRIGHT_MIN_RB_DELTA = 0.05;
 
-const double BRIGHT_MIN_CHROMA = 0.18;
+const double BRIGHT_MIN_CHROMA = 0.05;
 
 
 // =====================================================
@@ -905,9 +905,9 @@ const double BRIGHT_MIN_CHROMA = 0.18;
 
 const double NORMAL_TOTAL_THRESHOLD = 0.50;
 
-const double NORMAL_MIN_R_RATIO = 0.50;
+const double NORMAL_MIN_R_RATIO = 0.40;
 
-const double NORMAL_MIN_RG_DELTA = 0.12;
+const double NORMAL_MIN_RG_DELTA = 0.1;
 const double NORMAL_MIN_RB_DELTA = 0.10;
 
 const double NORMAL_MIN_CHROMA = 0.12;
@@ -924,7 +924,7 @@ const double DIM_MIN_RB_DELTA = 0.06;
 
 const double DIM_MIN_CHROMA = 0.06;
 
-const int highDisplacement = 250;
+const int highDisplacement = 200;
 const int smallDisplacement = 50;
 
 
@@ -989,6 +989,13 @@ void trackRuby(bool *rubyDetected, bool *rubyMoved, bool *attemptedTheft, int *p
 			double rgDifference = scaledR - scaledG;
 			double rbDifference = scaledR - scaledB;
 
+			// printf("ScaledR: %d\n", scaledR);
+			// printf("ScaledG: %d\n", scaledG);
+			// printf("ScaledB: %d\n", scaledB);
+			// printf("RRatio: %d\n", rRatio);
+			// printf("Total lightness: %d\n", total);
+			// printf("Chroma: %d\n", chroma);
+
 
 			// ---------- Reject white/grey glare ----------
 			if (total > BRIGHT_GLARE_TOTAL && chroma < MAX_GLARE_CHROMA){
@@ -999,13 +1006,13 @@ void trackRuby(bool *rubyDetected, bool *rubyMoved, bool *attemptedTheft, int *p
 
 
 			// ---------- Red must dominate ----------
-			if (scaledR <= scaledG || scaledR <= scaledB)
+			if (scaledR <= scaledG || scaledR <= scaledB){
 				continue;
-
+			}
 
 			// ---------- Reject yellow/orange ----------
-			if (scaledG > scaledR * MAX_GREEN_RED_RATIO)
-				continue;
+			// if (scaledG > scaledR * MAX_GREEN_RED_RATIO)
+			// 	continue;
 
 
 			// =================================================
@@ -1053,6 +1060,8 @@ void trackRuby(bool *rubyDetected, bool *rubyMoved, bool *attemptedTheft, int *p
             }
 
 
+
+
 		}
 
 		
@@ -1063,9 +1072,10 @@ void trackRuby(bool *rubyDetected, bool *rubyMoved, bool *attemptedTheft, int *p
 	
 
 
-	printf("Red count: %d", redCount);
+	printf("Red count: %d\n", redCount);
+	
     // -------- Ruby detection --------
-    if (redCount > 2000) {
+    if (redCount > 500 && redCount < 30000) {
 
         *rubyDetected = true;
         *attemptedTheft = false;
